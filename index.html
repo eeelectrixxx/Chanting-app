@@ -9,11 +9,10 @@
   <style>
     body {
       font-family: 'Sarabun', sans-serif;
-      background-color: #f3f4f6; /* Gray-100 */
+      background-color: #f3f4f6;
       -webkit-tap-highlight-color: transparent;
     }
     
-    /* Animation for sliding pages */
     .slide-enter {
       transform: translateX(100%);
     }
@@ -80,7 +79,6 @@
     </div>
   </div>
 
-
   <!-- ================= หน้ารายละเอียดบทสวด ================= -->
   <div id="chant-page" class="fixed inset-0 bg-white z-50 overflow-y-auto slide-enter hide">
     
@@ -96,25 +94,23 @@
         <h1 id="chant-title" class="text-lg font-semibold text-gray-900 absolute left-1/2 transform -translate-x-1/2">
           ชื่อบทสวด
         </h1>
-        <div class="w-16"></div> <!-- Spacer -->
+        <div class="w-16"></div> 
       </div>
     </div>
 
     <!-- เนื้อหาบทสวด -->
     <div class="p-6 pb-12 max-w-2xl mx-auto">
       <div id="chant-content" class="text-lg leading-relaxed text-gray-800 space-y-6">
-        <!-- เนื้อหาจะถูกแทรกที่นี่ผ่าน JavaScript -->
+        <!-- เนื้อหาจะถูกแทรกที่นี่ -->
       </div>
     </div>
   </div>
 
-
   <script>
-    // ฐานข้อมูลบทสวด (ฉบับสมบูรณ์)
     const chants = {
       morning: {
         title: 'ทำวัตรเช้า',
-        content: \`
+        content: `
           <div class="text-center mb-6">
             <span class="inline-block bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-sm font-medium">สวดตอนเช้า</span>
           </div>
@@ -207,11 +203,11 @@
           จิระปะรินิพพุตัมปิ ตัง ภะคะวันตัง สะระณัง คะตา<br>
           ธัมมัญจะ สังฆัญจะ ตัสสะ ภะคะวะโต สาสะนัง ยะถาสะติ ยะถาพะลัง มะนะสิกะโรมะ อะนุปะฏิปัชชามะ<br>
           สา สา โน ปะฏิปัตติ อิมัสสะ เกวะลัสสะ ทุกขักขันธัสสะ อันตะกิริยายะ สังวัตตะตุ ฯ</p>
-        \`
+        `
       },
       evening: {
         title: 'ทำวัตรเย็น',
-        content: \`
+        content: `
           <div class="text-center mb-6">
             <span class="inline-block bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full text-sm font-medium">สวดตอนเย็น</span>
           </div>
@@ -311,52 +307,42 @@
           สังเฆ กุกัมมัง ปะกะตัง มะยา ยัง<br>
           สังโฆ ปะฏิคคัณหะตุ อัจจะยันตัง<br>
           กาลันตะเร สังวะริตุง วะ สังเฆ</p>
-        \`
+        `
       }
     };
 
-    // DOM Elements
     const homePage = document.getElementById('home-page');
     const chantPage = document.getElementById('chant-page');
     const chantTitle = document.getElementById('chant-title');
     const chantContent = document.getElementById('chant-content');
 
-    // ฟังก์ชันเปิดหน้ารายละเอียด
     function openChant(type) {
-      // โหลดข้อมูล
       chantTitle.innerText = chants[type].title;
       chantContent.innerHTML = chants[type].content;
       
-      // แสดงหน้าพร้อมแอนิเมชัน
       chantPage.classList.remove('hide');
       
-      // บังคับให้เบราว์เซอร์รับรู้ว่า display เปลี่ยนก่อนเล่น transition
       requestAnimationFrame(() => {
         chantPage.classList.remove('slide-enter');
         chantPage.classList.add('slide-enter-active');
-        window.scrollTo(0, 0); // เลื่อนขึ้นบนสุด
+        window.scrollTo(0, 0); 
       });
 
-      // ซ่อนหน้าแรกเมื่อแอนิเมชันเสร็จสิ้น
       setTimeout(() => {
         homePage.classList.add('hide');
       }, 300);
     }
 
-    // ฟังก์ชันกลับหน้าแรก
     function goBack() {
-      // แสดงหน้าแรกขึ้นมาก่อน
       homePage.classList.remove('hide');
       
-      // เล่นแอนิเมชันเลื่อนออก
       chantPage.classList.remove('slide-enter-active');
       chantPage.classList.add('slide-exit-active');
       
-      // ซ่อนหน้ารายละเอียดเมื่อแอนิเมชันเสร็จสิ้น
       setTimeout(() => {
         chantPage.classList.add('hide');
         chantPage.classList.remove('slide-exit-active');
-        chantPage.classList.add('slide-enter'); // เตรียมพร้อมสำหรับการเปิดครั้งต่อไป
+        chantPage.classList.add('slide-enter'); 
       }, 300);
     }
   </script>
