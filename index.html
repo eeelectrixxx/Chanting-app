@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>บทสวดมนต์ วัดป่าบ้านตาด</title>
+  
+  <!-- โค้ดสำหรับกำหนดรูปไอคอนบนหน้าจอ iPhone -->
+  <link rel="apple-touch-icon" href="icon.png">
+  
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -68,6 +72,22 @@
         <div>
           <h2 class="text-xl font-medium text-gray-900">ทำวัตรเย็น</h2>
           <p class="text-sm text-gray-500 mt-1">บทสวดทำวัตรเย็น (แปล)</p>
+        </div>
+        <div class="ml-auto text-gray-400">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Card แผ่เมตตา -->
+      <div onclick="openChant('metta')" class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center active:bg-gray-50 transition-colors cursor-pointer">
+        <div class="w-16 h-16 bg-pink-100 text-pink-500 rounded-full flex items-center justify-center text-3xl mr-5 shrink-0">
+          🤍
+        </div>
+        <div>
+          <h2 class="text-xl font-medium text-gray-900">บทแผ่เมตตา</h2>
+          <p class="text-sm text-gray-500 mt-1">พรหมวิหารผรณา</p>
         </div>
         <div class="ml-auto text-gray-400">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -271,7 +291,7 @@
           <p>(รับ) สุปะฏิปันโน ภะคะวะโต สาวะกะสังโฆ อุชุปะฏิปันโน ภะคะวะโต สาวะกะสังโฆ,<br>
           ญายะปะฏิปันโน ภะคะวะโต สาวะกะสังโฆ สามีจิปะฏิปันโน ภะคะวะโต สาวะกะสังโฆ,<br>
           ยะทิทัง จัตตาริ ปุริสะยุคานิ อัฏฐะ ปุริสะปุคคะลา เอสะ ภะคะวะโต สาวะกะสังโฆ,<br>
-          อาหุเนยโย ปาหุเนยโย ทักขิเณยโย อัญชะลิกะระณีโย อะนุตตะรัง ปุญญักเขตตัง โลกัสสาติ.</p>
+          อาหุเนยโย ปาหุเนยโย ทักขิเณยโย อัญชะลีกะระณีโย อะนุตตะรัง ปุญญักเขตตัง โลกัสสาติ.</p>
 
           <h3 class="font-bold text-xl text-blue-900 mt-6 mb-2">สังฆาภิคีติ</h3>
           <p class="text-gray-500 text-sm mb-1">(กล่าวนำ) หันทะ มะยัง สังฆาภิคีติง กะโรมะ เส ฯ</p>
@@ -290,10 +310,45 @@
           สังฆัง เม วันทะมาเนนะ ยัง ปุญญัง ปะสุตัง อิธะ,<br>
           สัพเพปิ อันตะรายา เม มาเหสุง ตัสสะ เตชะสา.<br><br>
           <span class="text-gray-500 text-sm">(กราบหมอบลง สวดว่า)</span><br>
-          กาเยนะ วาจายะ วะ เจตะสา วา,<br>
+          กาเยนะ วาจายะ เจตะสา วา,<br>
           สังเฆ กุกัมมัง ปะกะตัง มะยา ยัง,<br>
           สังโฆ ปะฏิคคัณหะตุ อัจจะยันตัง,<br>
           กาลันตะเร สังวะริตุง วะ สังเฆ.</p>
+        `
+      },
+      metta: {
+        title: 'บทแผ่เมตตา',
+        content: `
+          <div class="text-center mb-6">
+            <span class="inline-block bg-pink-100 text-pink-600 px-3 py-1 rounded-full text-sm font-medium">ฉบับวัดป่าบ้านตาด</span>
+          </div>
+
+          <h3 class="font-bold text-xl text-blue-900 mb-2"> รัห์มะวิหาระผะระณา</h3>
+          <p class="text-gray-500 text-sm mb-4">ธรรมเครื่องอยู่ของพรหม</p>
+          <p>อะหัง สุขิโต โหมิ, <br><span class="text-gray-600 text-sm">ขอให้ข้าพเจ้าจงมีความสุข</span><br>
+          นิททุกโข โหมิ, <br><span class="text-gray-600 text-sm">จงเป็นผู้ปราศจากทุกข์</span><br>
+          อะเวโร โหมิ, <br><span class="text-gray-600 text-sm">จงเป็นผู้ปราศจากเวร</span><br>
+          อัพยาปัชโฌ โหมิ, <br><span class="text-gray-600 text-sm">จงเป็นผู้ไม่เบียดเบียนซึ่งกันและกัน</span><br>
+          อะนีโฆ โหมิ, <br><span class="text-gray-600 text-sm">จงเป็นผู้ไม่มีทุกข์กายทุกข์ใจ</span><br>
+          สุขี อัตตานังปะริหะรามิ, <br><span class="text-gray-600 text-sm">จงรักษาตนให้มีความสุขเถิด</span></p>
+
+          <p class="mt-4">สัพเพ สัตตา สุขิตา โหนตุ, <br><span class="text-gray-600 text-sm">สัตว์ทั้งหลายทั้งปวงจงเป็นผู้ถึงความสุข</span><br>
+          สัพเพ สัตตา อะเวรา โหนตุ, <br><span class="text-gray-600 text-sm">สัตว์ทั้งหลายทั้งปวงจงเป็นผู้ไม่มีเวร</span><br>
+          สัพเพ สัตตา อัพยาปัชฌา โหนตุ, <br><span class="text-gray-600 text-sm">สัตว์ทั้งหลายทั้งปวงจงเป็นผู้ไม่เบียดเบียนกัน</span><br>
+          สัพเพ สัตตา อะนีฆา โหนตุ, <br><span class="text-gray-600 text-sm">สัตว์ทั้งหลายทั้งปวงจงเป็นผู้ไม่มีทุกข์กายทุกข์ใจ</span><br>
+          สัพเพ สัตตา สุขี อัตตานัง ปะริหะรันตุ, <br><span class="text-gray-600 text-sm">ขอสัตว์ทั้งหลายทั้งปวงจงรักษาตนให้อยู่เป็นสุขเถิด</span><br>
+          สัพเพ สัตตา สัพพะทุกขา ปะมุจจันตุ, <br><span class="text-gray-600 text-sm">สัตว์ทั้งหลายทั้งปวงจงพ้นจากทุกข์ทั้งมวลเถิด</span><br>
+          สัพเพ สัตตา ลัทธะสัมปัตติโต มา วิคัจฉันตุ, <br><span class="text-gray-600 text-sm">สัตว์ทั้งหลายทั้งปวงจงอย่าได้พรากจากสมบัติอันตนได้แล้วเถิด</span></p>
+
+          <p class="mt-4">สัพเพ สัตตา กัมมัสสะกา กัมมะทายาทา กัมมะโยนี กัมมะพันธู กัมมะปะฏิสะระณา, <br>
+          ยัง กัมมัง กะริสสันติ กัลยาณัง วา ปาปะกัง วา ตัสสะ ทายาทา ภะวิสสันติ.<br>
+          <span class="text-gray-600 text-sm">สัตว์ทั้งหลายทั้งปวง มีกรรมเป็นของของตน มีกรรมเป็นผู้ให้ผล มีกรรมเป็นแดนเกิด มีกรรมเป็นผู้ติดตาม มีกรรมเป็นที่พึ่งอาศัย จักทำกรรมอันใดไว้ เป็นบุญหรือเป็นบาป จักต้องเป็นทายาท คือว่า จักต้องได้รับผลของกรรมนั้นสืบไป</span></p>
+
+          <h3 class="font-bold text-xl text-blue-900 mt-8 mb-2">บทพิเศษ</h3>
+          <p>สัพเพ สัตตา สะทา โหนตุ อะเวรา สุขะชีวิโน,<br>
+          <span class="text-gray-600 text-sm">ขอให้สัตว์ทั้งหลาย อย่าได้มีเวรแก่กันและกันเลย จงเป็นผู้ดำรงชีพอยู่เป็นสุขทุกเมื่อ เถิด</span><br><br>
+          กะตัง ปุญญังผะลัง มัย์หัง สัพเพ ภาคี ภะวันตุ เต.<br>
+          <span class="text-gray-600 text-sm">ขอให้สัตว์ทั้งหลาย จงได้เสวยผลบุญที่ข้าพเจ้าได้บำเพ็ญด้วย กาย วาจา ใจ แล้วนั้น เทอญ</span></p>
         `
       }
     };
