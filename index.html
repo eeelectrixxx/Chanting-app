@@ -1,242 +1,364 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <title>บทสวดมนต์</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        'sarabun': ['Sarabun', 'sans-serif'],
-                    },
-                    colors: {
-                        chant: {
-                            light: '#F9FAFB', 
-                            primary: '#D97706',
-                            dark: '#92400E',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body {
-            font-family: 'Sarabun', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-            background-color: #e5e7eb;
-        }
-        
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        .safe-pt { padding-top: env(safe-area-inset-top, 20px); }
-        .safe-pb { padding-bottom: env(safe-area-inset-bottom, 20px); }
-        
-        .chant-text {
-            line-height: 1.8;
-        }
-
-        /* Smooth slide transition classes */
-        .slide-enter {
-            transform: translateX(100%);
-        }
-        .slide-enter-active {
-            transform: translateX(0);
-            transition: transform 0.3s ease-out;
-        }
-        .slide-leave {
-            transform: translateX(0);
-        }
-        .slide-leave-active {
-            transform: translateX(100%);
-            transition: transform 0.3s ease-out;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>บทสวดมนต์</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Sarabun', sans-serif;
+      background-color: #f3f4f6; /* Gray-100 */
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Animation for sliding pages */
+    .slide-enter {
+      transform: translateX(100%);
+    }
+    .slide-enter-active {
+      transform: translateX(0);
+      transition: transform 0.3s ease-out;
+    }
+    .slide-exit {
+      transform: translateX(0);
+    }
+    .slide-exit-active {
+      transform: translateX(100%);
+      transition: transform 0.3s ease-in;
+    }
+    
+    .hide {
+      display: none !important;
+    }
+  </style>
 </head>
-<body class="flex justify-center h-screen overflow-hidden">
+<body class="text-gray-800 overflow-x-hidden">
 
-    <div class="w-full max-w-md bg-chant-light h-full flex flex-col relative shadow-xl overflow-hidden">
-        
-        <!-- Header (iOS Style) -->
-        <header class="bg-white/80 backdrop-blur-md border-b border-gray-200 z-20 safe-pt absolute top-0 w-full">
-            <div class="flex items-center h-14 relative px-4">
-                <!-- Back Button (Hidden on Home) -->
-                <button id="btn-back" onclick="goBack()" class="absolute left-4 text-blue-600 font-medium text-lg hidden items-center gap-1 active:opacity-50 transition-opacity">
-                    <i class="fa-solid fa-chevron-left text-base"></i> กลับ
-                </button>
-                
-                <!-- Dynamic Title -->
-                <h1 id="header-title" class="text-xl font-semibold text-gray-900 w-full text-center tracking-wide">บทสวดมนต์</h1>
-            </div>
-        </header>
-
-        <!-- Home View -->
-        <main id="view-home" class="flex-1 overflow-y-auto hide-scrollbar pt-[90px] px-6 pb-6">
-            <div class="grid grid-cols-2 gap-5">
-                
-                <!-- Morning Card -->
-                <button onclick="openChant('morning', 'ทำวัตรเช้า')" class="aspect-square bg-white rounded-3xl shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-gray-100 flex flex-col items-center justify-center gap-4 active:scale-95 transition-transform duration-200">
-                    <div class="w-16 h-16 rounded-full bg-amber-50 text-amber-500 flex items-center justify-center text-3xl">
-                        <i class="fa-solid fa-sun"></i>
-                    </div>
-                    <span class="font-medium text-gray-800 text-lg">ทำวัตรเช้า</span>
-                </button>
-
-                <!-- Evening Card -->
-                <button onclick="openChant('evening', 'ทำวัตรเย็น')" class="aspect-square bg-white rounded-3xl shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-gray-100 flex flex-col items-center justify-center gap-4 active:scale-95 transition-transform duration-200">
-                    <div class="w-16 h-16 rounded-full bg-indigo-50 text-indigo-500 flex items-center justify-center text-3xl">
-                        <i class="fa-solid fa-moon"></i>
-                    </div>
-                    <span class="font-medium text-gray-800 text-lg">ทำวัตรเย็น</span>
-                </button>
-
-            </div>
-        </main>
-
-        <!-- Chant Detail View (Hidden by default) -->
-        <main id="view-chant" class="flex-1 overflow-y-auto hide-scrollbar pt-[80px] pb-10 px-5 absolute inset-0 bg-chant-light z-10 slide-enter hidden">
-            
-            <!-- ทำวัตรเช้า Content -->
-            <div id="content-morning" class="hidden pb-10">
-                <div class="text-center mb-6 mt-4">
-                    <h2 class="text-2xl font-semibold text-amber-700 mb-2">ทำวัตรเช้า</h2>
-                    <div class="h-1 w-12 bg-amber-400 mx-auto rounded-full"></div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-6 shadow-sm mb-5 border border-gray-100">
-                    <h3 class="text-lg font-semibold text-amber-600 mb-4 text-center">คำบูชาพระรัตนตรัย</h3>
-                    <p class="text-[19px] text-gray-800 chant-text mb-4">
-                        โย โส ภะคะวา อะระหัง สัมมาสัมพุทโธ,<br>
-                        สวากขาโต เยนะ ภะคะวะตา ธัมโม,<br>
-                        สุปะฏิปันโน ยัสสะ ภะคะวะโต สาวะกะสังโฆ,
-                    </p>
-                    <p class="text-[19px] text-gray-800 chant-text">
-                        ตัมมะยัง ภะคะวันตัง สะธัมมัง สะสังฆัง,<br>
-                        อิเมหิ สักกาเรหิ ยะถาระหัง อาโรปิเตหิ อะภิปูชะยามะ,<br>
-                        สาธุ โน ภันเต ภะคะวา สุจิระปะรินิพพุโตปิ,<br>
-                        ปัจฉิมาชะนะตานุกัมปะมานะสา,<br>
-                        อิเม สักกาเร ทุคคะตะปัณณาการะภูเต ปะฏิคคัณหาตุ,<br>
-                        อัมหากัง ทีฆะรัตตัง หิตายะ สุขายะฯ
-                    </p>
-                </div>
-
-                <div class="bg-white rounded-2xl p-6 shadow-sm mb-5 border border-gray-100">
-                    <h3 class="text-lg font-semibold text-amber-600 mb-4 text-center">ปุพพะภาคะนะมะการะ</h3>
-                    <p class="text-center text-sm text-gray-500 mb-4">(นำ) หันทะ มะยัง พุทธัสสะ ภะคะวะโต ปุพพะภาคะนะมะการัง กะโรมะ เสฯ</p>
-                    <p class="text-[19px] text-gray-800 chant-text text-center">
-                        นะโม ตัสสะ ภะคะวะโต<br>
-                        อะระหะโต<br>
-                        สัมมาสัมพุทธัสสะ<br>
-                        <span class="text-sm text-gray-500 mt-2 block">(สวด ๓ จบ)</span>
-                    </p>
-                </div>
-            </div>
-
-            <!-- ทำวัตรเย็น Content -->
-            <div id="content-evening" class="hidden pb-10">
-                <div class="text-center mb-6 mt-4">
-                    <h2 class="text-2xl font-semibold text-indigo-700 mb-2">ทำวัตรเย็น</h2>
-                    <div class="h-1 w-12 bg-indigo-500 mx-auto rounded-full"></div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-6 shadow-sm mb-5 border border-gray-100">
-                    <h3 class="text-lg font-semibold text-indigo-600 mb-4 text-center">คำบูชาพระรัตนตรัย</h3>
-                    <p class="text-[19px] text-gray-800 chant-text mb-4">
-                        โย โส ภะคะวา อะระหัง สัมมาสัมพุทโธ,<br>
-                        สวากขาโต เยนะ ภะคะวะตา ธัมโม,<br>
-                        สุปะฏิปันโน ยัสสะ ภะคะวะโต สาวะกะสังโฆ,
-                    </p>
-                    <p class="text-[19px] text-gray-800 chant-text">
-                        ตัมมะยัง ภะคะวันตัง สะธัมมัง สะสังฆัง,<br>
-                        อิเมหิ สักกาเรหิ ยะถาระหัง อาโรปิเตหิ อะภิปูชะยามะ,<br>
-                        สาธุ โน ภันเต ภะคะวา สุจิระปะรินิพพุโตปิ,<br>
-                        ปัจฉิมาชะนะตานุกัมปะมานะสา,<br>
-                        อิเม สักกาเร ทุคคะตะปัณณาการะภูเต ปะฏิคคัณหาตุ,<br>
-                        อัมหากัง ทีฆะรัตตัง หิตายะ สุขายะฯ
-                    </p>
-                </div>
-
-                <div class="bg-white rounded-2xl p-6 shadow-sm mb-5 border border-gray-100">
-                    <h3 class="text-lg font-semibold text-indigo-600 mb-4 text-center">ปุพพะภาคะนะมะการะ</h3>
-                    <p class="text-center text-sm text-gray-500 mb-4">(นำ) หันทะ มะยัง พุทธัสสะ ภะคะวะโต ปุพพะภาคะนะมะการัง กะโรมะ เสฯ</p>
-                    <p class="text-[19px] text-gray-800 chant-text text-center">
-                        นะโม ตัสสะ ภะคะวะโต<br>
-                        อะระหะโต<br>
-                        สัมมาสัมพุทธัสสะ<br>
-                        <span class="text-sm text-gray-500 mt-2 block">(สวด ๓ จบ)</span>
-                    </p>
-                </div>
-            </div>
-            
-            <div class="h-safe-pb"></div>
-        </main>
+  <!-- ================= หน้าแรก: เมนูเลือกบทสวด ================= -->
+  <div id="home-page" class="min-h-screen flex flex-col pt-12 px-6">
+    <div class="text-center mb-10">
+      <h1 class="text-3xl font-semibold text-gray-900 mb-2">บทสวดมนต์</h1>
+      <p class="text-gray-500">เลือกบทสวดที่ต้องการ</p>
     </div>
 
-    <script>
-        const viewHome = document.getElementById('view-home');
-        const viewChant = document.getElementById('view-chant');
-        const btnBack = document.getElementById('btn-back');
-        const headerTitle = document.getElementById('header-title');
-        
-        const contentMorning = document.getElementById('content-morning');
-        const contentEvening = document.getElementById('content-evening');
+    <div class="grid grid-cols-1 gap-6">
+      
+      <!-- Card ทำวัตรเช้า -->
+      <div onclick="openChant('morning')" class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center active:bg-gray-50 transition-colors cursor-pointer">
+        <div class="w-16 h-16 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center text-3xl mr-5 shrink-0">
+          ☀️
+        </div>
+        <div>
+          <h2 class="text-xl font-medium text-gray-900">ทำวัตรเช้า</h2>
+          <p class="text-sm text-gray-500 mt-1">บทสวดมนต์สำหรับตอนเช้า</p>
+        </div>
+        <div class="ml-auto text-gray-400">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
+      </div>
 
-        function openChant(type, title) {
-            // Update Header
-            headerTitle.textContent = title;
-            btnBack.style.display = 'flex';
-            
-            // Hide all content first
-            contentMorning.classList.add('hidden');
-            contentEvening.classList.add('hidden');
+      <!-- Card ทำวัตรเย็น -->
+      <div onclick="openChant('evening')" class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center active:bg-gray-50 transition-colors cursor-pointer">
+        <div class="w-16 h-16 bg-indigo-100 text-indigo-500 rounded-full flex items-center justify-center text-3xl mr-5 shrink-0">
+          🌙
+        </div>
+        <div>
+          <h2 class="text-xl font-medium text-gray-900">ทำวัตรเย็น</h2>
+          <p class="text-sm text-gray-500 mt-1">บทสวดมนต์สำหรับตอนเย็น</p>
+        </div>
+        <div class="ml-auto text-gray-400">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
+      </div>
 
-            // Show selected content
-            if (type === 'morning') {
-                contentMorning.classList.remove('hidden');
-            } else if (type === 'evening') {
-                contentEvening.classList.remove('hidden');
-            }
+    </div>
+  </div>
 
-            // Scroll to top of chant view
-            viewChant.scrollTop = 0;
 
-            // Transition: Show Chant View
-            viewChant.classList.remove('hidden');
-            
-            // Allow a tiny delay for display:block to apply before animating
-            requestAnimationFrame(() => {
-                viewChant.classList.remove('slide-enter');
-                viewChant.classList.add('slide-enter-active');
-            });
-        }
+  <!-- ================= หน้ารายละเอียดบทสวด ================= -->
+  <div id="chant-page" class="fixed inset-0 bg-white z-50 overflow-y-auto slide-enter hide">
+    
+    <!-- Header แบบ iOS -->
+    <div class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-200">
+      <div class="flex items-center justify-between h-14 px-4">
+        <button onclick="goBack()" class="text-blue-500 flex items-center text-lg font-medium active:opacity-50">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+          </svg>
+          กลับ
+        </button>
+        <h1 id="chant-title" class="text-lg font-semibold text-gray-900 absolute left-1/2 transform -translate-x-1/2">
+          ชื่อบทสวด
+        </h1>
+        <div class="w-16"></div> <!-- Spacer -->
+      </div>
+    </div>
 
-        function goBack() {
-            // Revert Header
-            headerTitle.textContent = 'บทสวดมนต์';
-            btnBack.style.display = 'none';
+    <!-- เนื้อหาบทสวด -->
+    <div class="p-6 pb-12 max-w-2xl mx-auto">
+      <div id="chant-content" class="text-lg leading-relaxed text-gray-800 space-y-6">
+        <!-- เนื้อหาจะถูกแทรกที่นี่ผ่าน JavaScript -->
+      </div>
+    </div>
+  </div>
 
-            // Transition: Hide Chant View
-            viewChant.classList.remove('slide-enter-active');
-            viewChant.classList.add('slide-enter');
 
-            // Wait for animation to finish before hiding display
-            setTimeout(() => {
-                viewChant.classList.add('hidden');
-            }, 300); // Matches the 0.3s transition time
-        }
-    </script>
+  <script>
+    // ฐานข้อมูลบทสวด (ฉบับสมบูรณ์)
+    const chants = {
+      morning: {
+        title: 'ทำวัตรเช้า',
+        content: \`
+          <div class="text-center mb-6">
+            <span class="inline-block bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-sm font-medium">สวดตอนเช้า</span>
+          </div>
+          
+          <h3 class="font-bold text-xl text-blue-900 mb-2">คำบูชาพระรัตนตรัย</h3>
+          <p>โย โส ภะคะวา อะระหัง สัมมาสัมพุทโธ<br>
+          สวากขาโต เยนะ ภะคะวะตา ธัมโม<br>
+          สุปะฏิปันโน ยัสสะ ภะคะวะโต สาวะกะสังโฆ<br>
+          ตัมมะยัง ภะคะวันตัง สะธัมมัง สะสังฆัง<br>
+          อิเมหิ สักกาเรหิ ยะถาระหัง อาโรปิเตหิ อะภิปูชะยามะ<br>
+          สาธุ โน ภันเต ภะคะวา สุจิระปะรินิพพุโตปิ<br>
+          ปัจฉิมาชะนะตานุกัมปะมานะสา<br>
+          อิเม สักกาเร ทุคคะตะปัณณาการะภูเต ปะฏิคคัณหาตุ<br>
+          อัมหากัง ทีฆะรัตตัง หิตายะ สุขายะ</p>
+
+          <h3 class="font-bold text-xl text-blue-900 mt-6 mb-2">คำกราบพระรัตนตรัย</h3>
+          <p>อะระหัง สัมมาสัมพุทโธ ภะคะวา, พุทธัง ภะคะวันตัง อะภิวาเทมิ (กราบ)<br>
+          สวากขาโต ภะคะวะตา ธัมโม, ธัมมัง นะมัสสามิ (กราบ)<br>
+          สุปะฏิปันโน ภะคะวะโต สาวะกะสังโฆ, สังฆัง นะมามิ (กราบ)</p>
+
+          <h3 class="font-bold text-xl text-blue-900 mt-6 mb-2">ปุพพภาคนมการ</h3>
+          <p>นะโม ตัสสะ ภะคะวะโต อะระหะโต สัมมาสัมพุทธัสสะ (สวด ๓ จบ)</p>
+
+          <h3 class="font-bold text-xl text-blue-900 mt-6 mb-2">พุทธาภิถุติ</h3>
+          <p>โย โส ตะถาคะโต อะระหัง สัมมาสัมพุทโธ<br>
+          วิชชาจะระณะสัมปันโน สุคะโต โลกะวิทู<br>
+          อะนุตตะโร ปุริสะทัมมะสาระถิ สัตถา เทวะมะนุสสานัง พุทโธ ภะคะวา<br>
+          โย อิมัง โลกัง สะเทวะกัง สะมาระกัง สะพรหมะกัง<br>
+          สัสสะมะณะพราหมะณิง ปะชัง สะเทวะมะนุสสัง สะยัง อะภิญญา สัจฉิกัตวา ปะเวเทสิ<br>
+          โย ธัมมัง เทเสสิ อาทิกัลยาณัง มัชเฌกัลยาณัง ปะริโยสานะกัลยาณัง<br>
+          สาตถัง สะพยัญชะนัง เกวะละปะริปุณณัง ปะริสุทธัง พรหมะจะริยัง ปะกาเสสิ<br>
+          ตะมะหัง ภะคะวันตัง อะภิปูชะยามิ ตะมะหัง ภะคะวันตัง สิระสา นะมามิ (กราบ)</p>
+
+          <h3 class="font-bold text-xl text-blue-900 mt-6 mb-2">ธัมมาภิถุติ</h3>
+          <p>โย โส สวากขาโต ภะคะวะตา ธัมโม<br>
+          สันทิฏฐิโก อะกาลิโก เอหิปัสสิโก<br>
+          โอปะนะยิโก ปัจจัตตัง เวทิตัพโพ วิญญูหิ<br>
+          ตะมะหัง ธัมมัง อะภิปูชะยามิ ตะมะหัง ธัมมัง สิระสา นะมามิ (กราบ)</p>
+
+          <h3 class="font-bold text-xl text-blue-900 mt-6 mb-2">สังฆาภิถุติ</h3>
+          <p>โย โส สุปะฏิปันโน ภะคะวะโต สาวะกะสังโฆ<br>
+          อุชุปะฏิปันโน ภะคะวะโต สาวะกะสังโฆ<br>
+          ญายะปะฏิปันโน ภะคะวะโต สาวะกะสังโฆ<br>
+          สามีจิปะฏิปันโน ภะคะวะโต สาวะกะสังโฆ<br>
+          ยะทิทัง จัตตาริ ปุริสะยุคานิ อัฏฐะ ปุริสะปุคคะลา<br>
+          เอสะ ภะคะวะโต สาวะกะสังโฆ<br>
+          อาหุเนยโย ปาหุเนยโย ทักขิเณยโย อัญชะลิกะระณีโย<br>
+          อะนุตตะรัง ปุญญักเขตตัง โลกัสสะ<br>
+          ตะมะหัง สังฆัง อะภิปูชะยามิ ตะมะหัง สังฆัง สิระสา นะมามิ (กราบ)</p>
+
+          <h3 class="font-bold text-xl text-blue-900 mt-6 mb-2">รตนัตตยัปปณามคาถา</h3>
+          <p>พุทโธ สุสุทโธ กะรุณามะหัณณะโว<br>
+          โยจจันตะสุทธัพพะระญาณะโลจะโน<br>
+          โลกัสสะ ปาปูปะกิเลสะฆาตะโก<br>
+          วันทามิ พุทธัง อะหะมาทะเรนะ ตัง<br><br>
+          ธัมโม ปะทีโป วิยะ ตัสสะ สัตถุโน<br>
+          โย มัคคะปากามะตะเภทะภินนะโก<br>
+          โลกุตตะโร โย จะ ตะทัตถะทีปะโก<br>
+          วันทามิ ธัมมัง อะหะมาทะเรนะ ตัง<br><br>
+          สังโฆ สุเขตตาภะยะติเขตตะสัญญิโต<br>
+          โย ทิฏฐะสันโต สุคะตานุโพธะโก<br>
+          โลลัปปะหีโน อะริโย สุเมธะโส<br>
+          วันทามิ สังฆัง อะหะมาทะเรนะ ตัง<br><br>
+          อิจเจวะเมกันตะภิปูชะเนยยะกัง<br>
+          วัตถุตตะยัง วันทะยะตาภิสังขะตัง<br>
+          ปุญญัง มะยา ยัง มะมะ สัพพุปัททะวา<br>
+          มา โหนตุ เว ตัสสะ ปะภาวะสิทธิยา</p>
+
+          <h3 class="font-bold text-xl text-blue-900 mt-6 mb-2">สังเวคปริกิตตนปาฐะ</h3>
+          <p>อิธะ ตะถาคะโต โลเก อุปปันโน อะระหัง สัมมาสัมพุทโธ<br>
+          ธัมโม จะ เทสิโต นิยยานิโก อุปะสะมิโก ปะรินิพพานิโก<br>
+          สัมโพธะคามี สุคะตัปปะเวทิโต<br>
+          มะยันตัง ธัมมัง สุตวา เอวัง ชานามะ<br>
+          ชาติปิ ทุกขา ชะราปิ ทุกขา มะระณัมปิ ทุกขัง<br>
+          โสกะปะริเทวะทุกขะโทมะนัสสุปายาสาปิ ทุกขา<br>
+          อัปปิเยหิ สัมปะโยโค ทุกโข ปิเยหิ วิปปะโยโค ทุกโข ยัมปิจฉัง นะ ละภะติ ตัมปิ ทุกขัง<br>
+          สังขิตเตนะ ปัญจุปาทานักขันธา ทุกขา<br>
+          เสยยะถีทัง รูปูปาทานักขันโธ เวทะนูปาทานักขันโธ<br>
+          สัญญูปาทานักขันโธ สังขารูปาทานักขันโธ วิญญาณูปาทานักขันโธ<br>
+          เยสัง ปะริญญายะ ธะระมาโน โส ภะคะวา<br>
+          เอวัง พะหุลัง สาวะเก วิเนติ<br>
+          เอวัง ภาคา จะ ปะนัสสะ ภะคะวะโต สาวะเกสุ อะนุสาสะนี พะหุลา ปะวัตตะติ<br>
+          รูปัง อะนิจจัง เวทะนา อะนิจจา สัญญา อะนิจจา สังขารา อะนิจจา วิญญาณัง อะนิจจัง<br>
+          รูปัง อะนัตตา เวทะนา อะนัตตา สัญญา อะนัตตา สังขารา อะนัตตา วิญญาณัง อะนัตตา<br>
+          สัพเพ สังขารา อะนิจจา สัพเพ ธัมมา อะนัตตาติ<br>
+          เต มะยัง โอติณณามะหะ ชาติยา ชะรามะระเณนะ<br>
+          โสเกหิ ปะริเทเวหิ ทุกเขหิ โทมะนัสเสหิ อุปายาเสหิ<br>
+          ทุกโขติณณา ทุกขะปะเรตา<br>
+          อัปเปวะนามิมัสสะ เกวะลัสสะ ทุกขักขันธัสสะ อันตะกิริยา ปัญญาเยถาติ<br>
+          จิระปะรินิพพุตัมปิ ตัง ภะคะวันตัง สะระณัง คะตา<br>
+          ธัมมัญจะ สังฆัญจะ ตัสสะ ภะคะวะโต สาสะนัง ยะถาสะติ ยะถาพะลัง มะนะสิกะโรมะ อะนุปะฏิปัชชามะ<br>
+          สา สา โน ปะฏิปัตติ อิมัสสะ เกวะลัสสะ ทุกขักขันธัสสะ อันตะกิริยายะ สังวัตตะตุ ฯ</p>
+        \`
+      },
+      evening: {
+        title: 'ทำวัตรเย็น',
+        content: \`
+          <div class="text-center mb-6">
+            <span class="inline-block bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full text-sm font-medium">สวดตอนเย็น</span>
+          </div>
+
+          <h3 class="font-bold text-xl text-blue-900 mb-2">คำบูชาพระรัตนตรัย</h3>
+          <p>โย โส ภะคะวา อะระหัง สัมมาสัมพุทโธ<br>
+          สวากขาโต เยนะ ภะคะวะตา ธัมโม<br>
+          สุปะฏิปันโน ยัสสะ ภะคะวะโต สาวะกะสังโฆ<br>
+          ตัมมะยัง ภะคะวันตัง สะธัมมัง สะสังฆัง<br>
+          อิเมหิ สักกาเรหิ ยะถาระหัง อาโรปิเตหิ อะภิปูชะยามะ<br>
+          สาธุ โน ภันเต ภะคะวา สุจิระปะรินิพพุโตปิ<br>
+          ปัจฉิมาชะนะตานุกัมปะมานะสา<br>
+          อิเม สักกาเร ทุคคะตะปัณณาการะภูเต ปะฏิคคัณหาตุ<br>
+          อัมหากัง ทีฆะรัตตัง หิตายะ สุขายะ</p>
+
+          <h3 class="font-bold text-xl text-blue-900 mt-6 mb-2">คำกราบพระรัตนตรัย</h3>
+          <p>อะระหัง สัมมาสัมพุทโธ ภะคะวา, พุทธัง ภะคะวันตัง อะภิวาเทมิ (กราบ)<br>
+          สวากขาโต ภะคะวะตา ธัมโม, ธัมมัง นะมัสสามิ (กราบ)<br>
+          สุปะฏิปันโน ภะคะวะโต สาวะกะสังโฆ, สังฆัง นะมามิ (กราบ)</p>
+
+          <h3 class="font-bold text-xl text-blue-900 mt-6 mb-2">ปุพพภาคนมการ</h3>
+          <p>นะโม ตัสสะ ภะคะวะโต อะระหะโต สัมมาสัมพุทธัสสะ (สวด ๓ จบ)</p>
+
+          <h3 class="font-bold text-xl text-blue-900 mt-6 mb-2">พุทธานุสสติ</h3>
+          <p>ตัง โข ปะนะ ภะคะวันตัง เอวัง กัลยาโณ กิตติสัทโท อัพภุคคะโต<br>
+          อิติปิโส ภะคะวา อะระหัง สัมมาสัมพุทโธ วิชชาจะระณะสัมปันโน สุคะโต โลกะวิทู<br>
+          อะนุตตะโร ปุริสะทัมมะสาระถิ สัตถา เทวะมะนุสสานัง พุทโธ ภะคะวาติ</p>
+
+          <h3 class="font-bold text-xl text-blue-900 mt-6 mb-2">พุทธาภิคีติ</h3>
+          <p>พุทธะวาระหันตะวะระตาทิคุณาภิยุตโต<br>
+          สุทธาภิญาณะกะรุณาหิ สะมาคะตัตโต<br>
+          โพเธสิ โย สุชะนะตังกะมะลังวะ สูโร<br>
+          วันทามะหัง ตะมะระณัง สิระสา ชิเนนทัง<br><br>
+          พุทโธ โย สัพพะปาณีนัง สะระณัง เขมะมุตตะมัง<br>
+          ปะฐะมานุสสติฏฐานัง วันทามิ ตัง สิเรนะหัง<br>
+          พุทธัสสาหัสมิ ทาโส (ทาสี) วะ พุทโธ เม สามิกิสสะโร<br>
+          พุทโธ ทุกขัสสะ ฆาตา จะ วิธาตา จะ หิตัสสะ เม<br>
+          พุทธัสสาหัง นิยยาเทมิ สะรีรัญชีวิตัญจิทัง<br>
+          วันทันโตหัง (ตีหัง) จะริสสามิ พุทธัสเสวะ สุโพธิตัง<br>
+          นัตถิ เม สะระณัง อัญญัง พุทโธ เม สะระณัง วะรัง<br>
+          เอเตนะ สัจจะวัชเชนะ วัฑเฒยยัง สัตถุสาสะเน<br>
+          พุทธัง เม วันทะมาเนนะ (มานายะ) ยัง ปุญญัง ปะสุตัง อิธะ<br>
+          สัพเพปิ อันตะรายา เม มาเหสุง ตัสสะ เตชะสา<br><br>
+          (หมอบกราบแล้วสวดดังนี้)<br>
+          กาเยนะ วาจายะ วะเจตะสา วา<br>
+          พุทเธ กุกัมมัง ปะกะตัง มะยายัง<br>
+          พุทโธ ปะฏิคคัณหะตุ อัจจะยันตัง<br>
+          กาลันตะเร สังวะริตุง วะพุทเธ</p>
+
+          <h3 class="font-bold text-xl text-blue-900 mt-6 mb-2">ธัมมานุสสติ</h3>
+          <p>สวากขาโต ภะคะวะตา ธัมโม สันทิฏฐิโก อะกาลิโก เอหิปัสสิโก โอปะนะยิโก ปัจจัตตัง เวทิตัพโพ วิญญูฮีติ</p>
+
+          <h3 class="font-bold text-xl text-blue-900 mt-6 mb-2">ธัมมาภิคีติ</h3>
+          <p>สวากขาตะตาทิคุณะโยคะวะเสนะ เสยโย<br>
+          โย มัคคะปากะปะริยัตติวิโมกขะเภโท<br>
+          ธัมโม กุโลกะปะตะนา ตะทะธาริธารี<br>
+          วันทามะหัง ตะมะหะรัง วะระธัมมะเมตัง<br><br>
+          ธัมโม โย สัพพะปาณีนัง สะระณัง เขมะมุตตะมัง<br>
+          ทุติยานุสสะติฏฐานัง วันทามิ ตัง สิเรนะหัง<br>
+          ธัมมัสสาหัสมิ ทาโส (ทาสี) วะ ธัมโม เม สามิกิสสะโร<br>
+          ธัมโม ทุกขัสสะ ฆาตา จะ วิธาตา จะ หิตัสสะ เม<br>
+          ธัมมัสสาหัง นิยยาเทมิ สะรีรัญชีวิตัญจิทัง<br>
+          วันทันโตหัง (ตีหัง) จะริสสามิ ธัมมัสเสวะ สุธัมมะตัง<br>
+          นัตถิ เม สะระณัง อัญญัง ธัมโม เม สะระณัง วะรัง<br>
+          เอเตนะ สัจจะวัชเชนะ วัฑเฒยยัง สัตถุ สาสะเน<br>
+          ธัมมัง เม วันทะมาเนนะ (มานายะ) ยัง ปุญญัง ปะสุตัง อิธะ<br>
+          สัพเพปิ อันตะรายา เม มาเหสุง ตัสสะ เตชะสา<br><br>
+          (หมอบกราบแล้วสวดดังนี้)<br>
+          กาเยนะ วาจายะ วะ เจตะสา วา<br>
+          ธัมเม กุกัมมัง ปะกะตัง มะยา ยัง<br>
+          ธัมโม ปะฏิคคัณหะตุ อัจจะยันตัง<br>
+          กาลันตะเร สังวะริตุง วะ ธัมเม</p>
+
+          <h3 class="font-bold text-xl text-blue-900 mt-6 mb-2">สังฆานุสสติ</h3>
+          <p>สุปะฏิปันโน ภะคะวะโต สาวะกะสังโฆ อุชุปะฏิปันโน ภะคะวะโต สาวะกะสังโฆ<br>
+          ญายะปะฏิปันโน ภะคะวะโต สาวะกะสังโฆ สามีจิปะฏิปันโน ภะคะวะโต สาวะกะสังโฆ<br>
+          ยะทิทัง จัตตาริ ปุริสะยุคานิ อัฏฐะ ปุริสะปุคคะลา เอสะ ภะคะวะโต สาวะกะสังโฆ<br>
+          อาหุเนยโย ปาหุเนยโย ทักขิเนยโย อัญชะลีกะระณีโย อะนุตตะรัง ปุญญักเขตตัง โลกัสสา ติ</p>
+
+          <h3 class="font-bold text-xl text-blue-900 mt-6 mb-2">สังฆาภิคีติ</h3>
+          <p>สัทธัมมะโช สุปะฏิปัตติคุณาทิยุตโต<br>
+          โยฏฐัพพิโธ อะริยะปุคคะละสังฆะเสฏโฐ<br>
+          สีลาทิธัมมะปะวะราสะยะกายะจิตโต<br>
+          วันทามะหัง ตะมะริยานะคะณัง สุสุทธัง<br><br>
+          สังโฆ โย สัพพะปาณีนัง สะระณัง เขมะมุตตะมัง<br>
+          ตะติยานุสสะติฏฐานัง วันทามิ ตัง สิเรนะหัง<br>
+          สังฆัสสาหัสมิ ทาโส (ทาสี) วะ สังโฆ เม สามิกิสสะโร<br>
+          สังโฆ ทุกขัสสะ ฆาตา จะ วิธาตา จะ หิตัสสะ เม<br>
+          สังฆัสสาหัง นิยยาเทมิ สะรีรัญชีวิตัญจิทัง<br>
+          วันทันโตหัง (ตีหัง) จะริสสามิ สังฆัสโสปะฏิปันนะตัง<br>
+          นัตถิ เม สะระณัง อัญญัง สังโฆ เม สะระณัง วะรัง<br>
+          เอเตนะ สัจจะวัชเชนะ วัฑเฒยยัง สัตถุ สาสะเน<br>
+          สังฆัง เม วันทะมาเนนะ (มานายะ) ยัง ปุญญัง ปะสุตัง อิธะ<br>
+          สัพเพปิ อันตะรายา เม มาเหสุง ตัสสะ เตชะสา<br><br>
+          (หมอบกราบแล้วสวดดังนี้)<br>
+          กาเยนะ วาจายะ เจตะสา วา<br>
+          สังเฆ กุกัมมัง ปะกะตัง มะยา ยัง<br>
+          สังโฆ ปะฏิคคัณหะตุ อัจจะยันตัง<br>
+          กาลันตะเร สังวะริตุง วะ สังเฆ</p>
+        \`
+      }
+    };
+
+    // DOM Elements
+    const homePage = document.getElementById('home-page');
+    const chantPage = document.getElementById('chant-page');
+    const chantTitle = document.getElementById('chant-title');
+    const chantContent = document.getElementById('chant-content');
+
+    // ฟังก์ชันเปิดหน้ารายละเอียด
+    function openChant(type) {
+      // โหลดข้อมูล
+      chantTitle.innerText = chants[type].title;
+      chantContent.innerHTML = chants[type].content;
+      
+      // แสดงหน้าพร้อมแอนิเมชัน
+      chantPage.classList.remove('hide');
+      
+      // บังคับให้เบราว์เซอร์รับรู้ว่า display เปลี่ยนก่อนเล่น transition
+      requestAnimationFrame(() => {
+        chantPage.classList.remove('slide-enter');
+        chantPage.classList.add('slide-enter-active');
+        window.scrollTo(0, 0); // เลื่อนขึ้นบนสุด
+      });
+
+      // ซ่อนหน้าแรกเมื่อแอนิเมชันเสร็จสิ้น
+      setTimeout(() => {
+        homePage.classList.add('hide');
+      }, 300);
+    }
+
+    // ฟังก์ชันกลับหน้าแรก
+    function goBack() {
+      // แสดงหน้าแรกขึ้นมาก่อน
+      homePage.classList.remove('hide');
+      
+      // เล่นแอนิเมชันเลื่อนออก
+      chantPage.classList.remove('slide-enter-active');
+      chantPage.classList.add('slide-exit-active');
+      
+      // ซ่อนหน้ารายละเอียดเมื่อแอนิเมชันเสร็จสิ้น
+      setTimeout(() => {
+        chantPage.classList.add('hide');
+        chantPage.classList.remove('slide-exit-active');
+        chantPage.classList.add('slide-enter'); // เตรียมพร้อมสำหรับการเปิดครั้งต่อไป
+      }, 300);
+    }
+  </script>
 </body>
 </html>
